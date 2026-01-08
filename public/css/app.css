@@ -1,0 +1,26 @@
+@import "tailwindcss";
+
+@theme {
+  --color-minimal-primary: #8b5cf6; /* Violet-500 */
+  --color-minimal-secondary: #ec4899; /* Pink-500 */
+  --color-minimal-bg: #0f172a; /* Slate-900 - Darker, cooler background */
+  --color-minimal-card: #1e293b; /* Slate-800 - Solid card background */
+  --color-minimal-text: #ffffff; /* Pure White */
+  --color-minimal-text-muted: #cbd5e1; /* Slate-300 - High contrast gray */
+  --color-minimal-border: #334155; /* Slate-700 */
+}
+
+/* Utilities */
+.text-shadow {
+    text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+}
+
+.card-hover {
+    transition: all 0.3s ease;
+}
+
+.card-hover:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 10px 10px -5px rgba(0, 0, 0, 0.4);
+    border-color: var(--color-minimal-primary);
+}
