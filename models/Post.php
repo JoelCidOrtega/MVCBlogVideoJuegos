@@ -25,13 +25,32 @@ class Post {
 
     public function store($title, $content, $image_url, $user_id) {
         $stmt = $this->db->prepare("INSERT INTO posts (title, content, image_url, user_id) VALUES (?, ?, ?, ?)");
-        $stmt->execute([$title, $content, $image_url, $user_id]);
+        try {
+            $stmt->execute([$title, $content, $image_url, $user_id]);
+        } catch (PDOException $e) {
+            // If the `image_url` column doesn't exist, retry without it
+            if ($e->getCode() === '42S22' || stripos($e->getMessage(), 'Unknown column') !== false) {
+                $stmt2 = $this->db->prepare("INSERT INTO posts (title, content, user_id) VALUES (?, ?, ?)");
+                $stmt2->execute([$title, $content, $user_id]);
+            } else {
+                throw $e;
+            }
+        }
+
         return $this->db->lastInsertId();
     }
 
     public function update($id, $title, $content, $image_url) {
         $stmt = $this->db->prepare("UPDATE posts SET title = ?, content = ?, image_url = ? WHERE id = ?");
-        return $stmt->execute([$title, $content, $image_url, $id]);
+        try {
+            return $stmt->execute([$title, $content, $image_url, $id]);
+        } catch (PDOException $e) {
+            if ($e->getCode() === '42S22' || stripos($e->getMessage(), 'Unknown column') !== false) {
+                $stmt2 = $this->db->prepare("UPDATE posts SET title = ?, content = ? WHERE id = ?");
+                return $stmt2->execute([$title, $content, $id]);
+            }
+            throw $e;
+        }
     }
 
     public function delete($id) {

@@ -7,8 +7,15 @@
             Autor: <?= htmlspecialchars($post['username']) ?> | Fecha: <?= date('d/m/Y', strtotime($post['created_at'])) ?>
         </div>
         
-        <?php if (!empty($post['image_url'])): ?>
-            <img src="<?= htmlspecialchars($post['image_url']) ?>" alt="Imagen del post" style="max-width: 100%; height: auto; margin: 20px 0;">
+        <?php if (!empty($post['image_url'])):
+            $img = $post['image_url'];
+            if (preg_match('/^https?:\/\//i', $img)) {
+                $src = $img;
+            } else {
+                $src = '/' . ltrim($img, '/');
+            }
+        ?>
+            <img src="<?= htmlspecialchars($src) ?>" alt="Imagen del post" style="max-width: 100%; height: auto; margin: 20px 0;">
         <?php endif; ?>
 
         <div class="content">

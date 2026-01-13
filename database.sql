@@ -17,5 +17,14 @@ CREATE TABLE IF NOT EXISTS posts (
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
+
+
 INSERT INTO users (username, email, password_hash, role) VALUES 
 ('Admin', 'admin@example.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'admin');
+
+INSERT INTO posts (user_id, title, content, image_url, created_at) VALUES
+(1, 'Elder Quest', 'Un RPG épico con mundo abierto, misiones profundas y combate táctico.', NULL, '2025-12-16 00:00:00'),
+(1, 'Cyber Drift', 'Carreras futuristas con coches modificables y pistas neon.', NULL, '2025-12-16 00:00:00'),
+(1, 'Mystic Saga', 'Aventura narrativa con puzles y decisiones que cambian la historia.', NULL, '2025-12-16 00:00:00'),
+(1, 'Racing Turbo', 'Simulador de carreras arcade con multijugador local.', NULL, '2025-12-16 00:00:00'),
+(1, 'Space Outlaws', 'Shooter espacial con exploración y comercio entre sistemas.', NULL, '2025-12-16 00:00:00');
