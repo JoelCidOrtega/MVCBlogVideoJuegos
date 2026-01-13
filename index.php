@@ -5,7 +5,6 @@ session_start();
 require_once __DIR__ . '/config/Database.php';
 require_once __DIR__ . '/controllers/PostController.php';
 require_once __DIR__ . '/controllers/UserController.php';
-// require_once __DIR__ . '/controllers/CommentController.php';
 
 $action = $_GET['action'] ?? 'posts';
 
@@ -46,15 +45,7 @@ switch ($action) {
         (new PostController())->destroy($id);
         break;
 
-    /*
-    case 'comment_store':
-        (new CommentController())->store();
-        break;
-    case 'delete_comment':
-        $id = $_GET['id'] ?? 0;
-        (new CommentController())->destroy($id);
-        break;
-    */
+    
 
     default:
         (new PostController())->index();

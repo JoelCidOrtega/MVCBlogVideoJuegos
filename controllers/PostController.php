@@ -1,17 +1,14 @@
 <?php
 
 require_once __DIR__ . '/../models/Post.php';
-require_once __DIR__ . '/../models/Comment.php';
 
 class PostController {
     private $postModel;
-    private $commentModel;
 
     public function __construct() {
         $database = new Database();
         $db = $database->getConnection();
         $this->postModel = new Post($db);
-        $this->commentModel = new Comment($db);
     }
 
     protected function render(string $view, array $data = []) {
@@ -30,8 +27,7 @@ class PostController {
             header("Location: index.php?action=posts");
             exit;
         }
-        $comments = $this->commentModel->byPost($id);
-        return $this->render('posts/show.php', compact('post', 'comments'));
+        return $this->render('posts/show.php', compact('post'));
     }
 
     public function create() {
