@@ -1,26 +1,68 @@
-@import "tailwindcss";
-
-@theme {
-  --color-minimal-primary: #8b5cf6; /* Violet-500 */
-  --color-minimal-secondary: #ec4899; /* Pink-500 */
-  --color-minimal-bg: #0f172a; /* Slate-900 - Darker, cooler background */
-  --color-minimal-card: #1e293b; /* Slate-800 - Solid card background */
-  --color-minimal-text: #ffffff; /* Pure White */
-  --color-minimal-text-muted: #cbd5e1; /* Slate-300 - High contrast gray */
-  --color-minimal-border: #334155; /* Slate-700 */
+/* public/css/app.css */
+:root {
+    --bg-dark: #0f172a;
+    --card-bg: rgba(30, 41, 59, 0.7);
+    --primary-glow: #8b5cf6; /* Violeta */
+    --secondary-pink: #ec4899; /* Rosa */
+    --text-main: #ffffff;
+    --text-muted: #cbd5e1;
+    --accent: #38bdf8; /* Celeste */
 }
 
-/* Utilities */
-.text-shadow {
-    text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+body {
+    background-color: var(--bg-dark);
+    background-image: linear-gradient(rgba(15, 23, 42, 0.8), rgba(15, 23, 42, 0.8)), 
+                      url('https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=2070');
+    background-size: cover;
+    background-attachment: fixed;
+    color: var(--text-main);
+    font-family: 'Inter', sans-serif;
+    margin: 0;
 }
 
-.card-hover {
-    transition: all 0.3s ease;
+.container {
+    max-width: 1000px;
+    margin: 50px auto;
+    padding: 30px;
+    background: var(--card-bg);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
 }
 
-.card-hover:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 10px 10px -5px rgba(0, 0, 0, 0.4);
-    border-color: var(--color-minimal-primary);
+/* Tarjetas de Posts (Inspirado en Frame 2) */
+.post-card {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 15px;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-left: 5px solid var(--primary-glow);
+    transition: 0.3s;
 }
+
+.post-card:hover {
+    transform: scale(1.02);
+    box-shadow: 0 0 20px rgba(139, 92, 246, 0.3);
+}
+
+/* Botones con degradado Gaming */
+.button, button {
+    background: linear-gradient(90deg, var(--primary-glow), var(--secondary-pink));
+    border: none;
+    color: white;
+    padding: 12px 24px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+/* Estilo de tablas para el Panel Admin (Frame 4) */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th { text-align: left; color: var(--accent); padding: 15px; border-bottom: 2px solid var(--primary-glow); }
+td { padding: 15px; border-bottom: 1px solid rgba(255, 255, 255, 0.1); }

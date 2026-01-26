@@ -45,7 +45,14 @@ switch ($action) {
         (new PostController())->destroy($id);
         break;
 
-    
+    case 'admin':
+        require_once 'controllers/AdminController.php';
+        (new AdminController())->dashboard();
+        break;
+    case 'update_role':
+        require_once 'controllers/AdminController.php';
+        (new AdminController())->changeRole();
+        break;
 
     default:
         (new PostController())->index();

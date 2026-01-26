@@ -9,24 +9,20 @@
         </div>
     <?php endif; ?>
 
-    <form method="POST" action="index.php?action=store_post">
-        <div class="form-group">
-            <label>Título</label>
-            <input type="text" name="title" required>
-        </div>
-        
-        <div class="form-group">
-            <label>URL de Imagen (Opcional)</label>
-            <input type="url" name="image_url" placeholder="https://...">
-        </div>
-
-        <div class="form-group">
-            <label>Contenido</label>
-            <textarea name="content" rows="10" required></textarea>
-        </div>
-
-        <button type="submit">Publicar</button>
-    </form>
-</div>
+<form method="POST" action="index.php?action=store_post" enctype="multipart/form-data">
+    <div class="form-group">
+        <label>Título del Videojuego</label>
+        <input type="text" name="title" required>
+    </div>
+    <div class="form-group">
+        <label>Imagen Destacada</label>
+        <input type="file" name="image" accept="image/*">
+    </div>
+    <div class="form-group">
+        <label>Análisis / Contenido</label>
+        <textarea name="content" rows="8" required></textarea>
+    </div>
+    <button type="submit">Publicar en el Blog</button>
+</form>
 
 <?php include __DIR__ . '/../layout/footer.php'; ?>
