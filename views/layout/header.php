@@ -12,16 +12,21 @@
             <div class="logo">
                 <a href="index.php">GameBlog</a>
             </div>
-            <ul>
-                <li><a href="index.php?action=posts">Inicio</a></li>
-                <?php if (isset($_SESSION['user_id'])): ?>
-                    <li><a href="index.php?action=create_post">Nuevo Post</a></li>
-                    <li><a href="index.php?action=logout">Salir (<?= htmlspecialchars($_SESSION['username'] ?? '') ?>)</a></li>
-                <?php else: ?>
-                    <li><a href="index.php?action=login">Entrar</a></li>
-                    <li><a href="index.php?action=register">Registro</a></li>
-                <?php endif; ?>
-            </ul>
+                <ul>
+                    <li><a href="index.php?action=posts">Inicio</a></li>
+                    <?php if (isset($_SESSION['user_id'])): ?>
+                        <li><a href="index.php?action=create_post">Nuevo Post</a></li>
+                        
+                        <?php if ($_SESSION['role'] === 'admin'): ?>
+                            <li><a href="index.php?action=admin" style="color: var(--secondary-pink); font-weight: bold;">PANEL ADMIN</a></li>
+                        <?php endif; ?>
+                        
+                        <li><a href="index.php?action=logout">Salir (<?= htmlspecialchars($_SESSION['username'] ?? '') ?>)</a></li>
+                    <?php else: ?>
+                        <li><a href="index.php?action=login">Entrar</a></li>
+                        <li><a href="index.php?action=register">Registro</a></li>
+                    <?php endif; ?>
+                </ul>
         </nav>
     </header>
     <main class="container">
