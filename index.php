@@ -18,14 +18,6 @@ switch ($action) {
     case 'logout':
         (new UserController())->logout();
         break;
-
-    case 'posts':
-        (new PostController())->index();
-        break;
-    case 'show_post':
-        $id = $_GET['id'] ?? 0;
-        (new PostController())->show($id);
-        break;
     case 'create_post':
         (new PostController())->create();
         break;
@@ -51,7 +43,13 @@ switch ($action) {
         break;
     case 'update_role':
         require_once 'controllers/AdminController.php';
-        (new AdminController())->changeRole();
+        (new AdminController())->updateRole();
+        break;
+    case 'posts':
+        (new PostController())->index();
+        break;
+    case 'show_post':
+        (new PostController())->show($_GET['id'] ?? 0);
         break;
 
     default:
