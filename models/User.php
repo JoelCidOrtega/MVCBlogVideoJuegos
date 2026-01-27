@@ -29,8 +29,8 @@ class User {
         return $stmt->fetchAll();
     }
 
-    public function updateRole($id, $role) {
-        $stmt = $this->db->prepare("UPDATE users SET role = ? WHERE id = ?");
-        return $stmt->execute([$role, $id]);
+    public function update($id, $username, $email, $role) {
+        $stmt = $this->db->prepare("UPDATE users SET username = ?, email = ?, role = ? WHERE id = ?");
+        return $stmt->execute([$username, $email, $role, $id]);
     }
 }

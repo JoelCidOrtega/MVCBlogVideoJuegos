@@ -35,7 +35,7 @@
                             <th class="px-4 py-2 border-b border-slate-700 font-bold">Usuario</th>
                             <th class="px-4 py-2 border-b border-slate-700 font-bold">Email</th>
                             <th class="px-4 py-2 border-b border-slate-700 font-bold">Rol</th>
-                            <th class="px-4 py-2 border-b border-slate-700 font-bold text-right">Acción</th>
+                            <th class="px-4 py-2 border-b border-slate-700 font-bold text-right">Acciones</th>
                         </tr>
                     </thead>
                     <tbody class="text-sm text-slate-300 divide-y divide-slate-700">
@@ -44,17 +44,13 @@
                             <td class="px-4 py-2 font-mono text-xs text-slate-500"><?= $u['id'] ?></td>
                             <td class="px-4 py-2 font-bold text-white"><?= htmlspecialchars($u['username']) ?></td>
                             <td class="px-4 py-2 text-slate-400"><?= htmlspecialchars($u['email']) ?></td>
-                            <td class="px-4 py-2">
-                                <form method="POST" action="index.php?action=update_role" class="m-0">
-                                    <input type="hidden" name="user_id" value="<?= $u['id'] ?>">
-                                    <select name="role" onchange="this.form.submit()" class="bg-slate-900 border border-slate-600 rounded px-2 py-1 text-xs text-slate-300 focus:border-blue-500 cursor-pointer">
-                                        <option value="subscriber" <?= $u['role'] == 'subscriber' ? 'selected' : '' ?>>Suscriptor</option>
-                                        <option value="writer" <?= $u['role'] == 'writer' ? 'selected' : '' ?>>Redactor</option>
-                                        <option value="admin" <?= $u['role'] == 'admin' ? 'selected' : '' ?>>Admin</option>
-                                    </select>
-                                </form>
+                            <td class="px-4 py-2 text-slate-400">
+                                <?= htmlspecialchars(ucfirst($u['role'])) ?>
                             </td>
-                            <td class="px-4 py-2 text-right">
+                            <td class="px-4 py-2 text-right space-x-2">
+                                <a href="index.php?action=edit_user&id=<?= $u['id'] ?>" class="text-blue-400 hover:text-blue-300 font-bold text-xs uppercase hover:underline">
+                                    Editar
+                                </a>
                                 <a href="index.php?action=delete_user&id=<?= $u['id'] ?>" onclick="return confirm('¿Eliminar?')" class="text-red-400 hover:text-red-300 font-bold text-xs uppercase hover:underline">
                                     Borrar
                                 </a>
