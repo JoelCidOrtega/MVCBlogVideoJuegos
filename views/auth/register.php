@@ -1,32 +1,38 @@
 <?php include __DIR__ . '/../layout/header.php'; ?>
 
-<div class="user-form">
-    <h2>Registro</h2>
+<div class="max-w-sm mx-auto mt-12 bg-slate-800 p-6 rounded border border-slate-700 shadow-lg">
+    <h2 class="text-xl font-bold text-white mb-6 text-center">Crear Cuenta</h2>
     
     <?php if (isset($error)): ?>
-        <div class="alert">
+        <div class="bg-red-900/20 text-red-200 p-3 rounded mb-4 text-xs border border-red-900/30">
             <?= htmlspecialchars($error) ?>
         </div>
     <?php endif; ?>
 
-    <form method="POST" action="index.php?action=register">
-        <div class="form-group">
-            <label>Usuario</label>
-            <input type="text" name="username" required>
+    <form method="POST" action="index.php?action=register" class="space-y-4">
+        <div>
+            <label class="block text-xs font-bold text-slate-400 mb-1 uppercase">Usuario</label>
+            <input type="text" name="username" required class="w-full bg-slate-900 border border-slate-600 rounded p-2 text-white focus:border-blue-500 outline-none text-sm">
         </div>
-        <div class="form-group">
-            <label>Email</label>
-            <input type="email" name="email" required>
+
+        <div>
+            <label class="block text-xs font-bold text-slate-400 mb-1 uppercase">Email</label>
+            <input type="email" name="email" required class="w-full bg-slate-900 border border-slate-600 rounded p-2 text-white focus:border-blue-500 outline-none text-sm">
         </div>
-        <div class="form-group">
-            <label>Contraseña</label>
-            <input type="password" name="password" required>
+        
+        <div>
+            <label class="block text-xs font-bold text-slate-400 mb-1 uppercase">Contraseña</label>
+            <input type="password" name="password" required class="w-full bg-slate-900 border border-slate-600 rounded p-2 text-white focus:border-blue-500 outline-none text-sm">
         </div>
-        <button type="submit">Registrarse</button>
+
+        <button type="submit" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-2 rounded text-sm transition-colors">
+            Registrarse
+        </button>
     </form>
-    <p>
-        ¿Ya tienes cuenta? <a href="index.php?action=login">Inicia sesión</a>
-    </p>
+    
+    <div class="mt-4 text-center">
+        <a href="index.php?action=login" class="text-xs text-blue-400 hover:text-white">¿Ya tienes cuenta? Inicia sesión</a>
+    </div>
 </div>
 
 <?php include __DIR__ . '/../layout/footer.php'; ?>

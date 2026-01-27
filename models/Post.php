@@ -28,7 +28,6 @@ class Post {
         try {
             $stmt->execute([$title, $content, $image_url, $user_id]);
         } catch (PDOException $e) {
-            // If the `image_url` column doesn't exist, retry without it
             if ($e->getCode() === '42S22' || stripos($e->getMessage(), 'Unknown column') !== false) {
                 $stmt2 = $this->db->prepare("INSERT INTO posts (title, content, user_id) VALUES (?, ?, ?)");
                 $stmt2->execute([$title, $content, $user_id]);

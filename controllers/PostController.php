@@ -38,7 +38,6 @@ class PostController {
         return $this->render('posts/create.php');
     }
 
-// Modificar el método store en PostController.php
     public function store() {
         if (!isset($_SESSION['user_id'])) exit;
 
@@ -46,7 +45,6 @@ class PostController {
         $content = htmlspecialchars(trim($_POST['content']));
         $image_path = null;
 
-        // Gestión de subida de imágenes
         if (!empty($_FILES['image']['name'])) {
             $target_dir = "public/uploads/";
             if (!is_dir($target_dir)) mkdir($target_dir, 0777, true);
@@ -55,7 +53,7 @@ class PostController {
             $target_file = $target_dir . $file_name;
 
             if (move_uploaded_file($_FILES["image"]["tmp_name"], $target_file)) {
-                $image_path = $target_file; // Guardar ruta en BD
+                $image_path = $target_file;
             }
         }
 
@@ -99,5 +97,18 @@ class PostController {
         $this->postModel->delete($id);
         header("Location: index.php?action=posts");
     }
-    
+  
+    public function addComment() {
+        if (!isset($_SESSION['user_id'])) header("Location: index.php?action=login");
+        
+        $post_id = $_POST['post_id'];
+        $content = trim($_POST['content']);
+        
+        if (!empty($content)) {
+            require_once __DIR__ . '/../models/Comment.php';
+            $commentModel = new Comment($this->postModel->getDbConnection());
+            $commentModel->store($post_id, $_SESSION['user_id'], $content);
+        }
+        header("Location: index.php?action=show_post&id=" . $post_id);
+    }
 }

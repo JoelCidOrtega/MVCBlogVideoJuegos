@@ -8,7 +8,6 @@ class Retriever {
     }
 
     public function search(string $query): array {
-        // Use FULLTEXT search
         $stmt = $this->db->prepare(
             "SELECT id, title, content, MATCH(title, content) AGAINST(? IN NATURAL LANGUAGE MODE) AS score 
              FROM posts 

@@ -32,6 +32,10 @@ switch ($action) {
         $id = $_GET['id'] ?? 0;
         (new PostController())->update($id);
         break;
+    case 'store_user':
+        require_once 'controllers/AdminController.php';
+        (new AdminController())->storeUser();
+        break;
     case 'delete_post':
         $id = $_GET['id'] ?? 0;
         (new PostController())->destroy($id);
@@ -52,7 +56,13 @@ switch ($action) {
         (new PostController())->show($_GET['id'] ?? 0);
         break;
 
+    case 'delete_user':
+        require_once 'controllers/AdminController.php';
+        (new AdminController())->deleteUser($_GET['id'] ?? 0);
+        break;
+
     default:
         (new PostController())->index();
         break;
+        
 }
