@@ -70,4 +70,30 @@ class UserController {
         header("Location: index.php?action=login");
         exit;
     }
+    public function profile($id = null) {
+        // If no ID provided, show current user's profile
+        if ($id === null) {
+            if (!isset($_SESSION['user_id'])) {
+                header("Location: index.php?action=login");
+                exit;
+            }
+            $id = $_SESSION['user_id'];
+        }
+
+        $user = $this->userModel->find($id);
+        if (!$user) {
+            header("Location: index.php?action=posts");
+            exit;
+        }
+
+        require_once __DIR__ . '/../models/Post.php';
+        
+        $database = new Database();
+        $db = $database->getConnection();
+        $postModel = new Post($db);
+
+        $posts = $postModel->getByUser($id);
+
+        return $this->render('users/profile.php', compact('user', 'posts'));
+    }
 }

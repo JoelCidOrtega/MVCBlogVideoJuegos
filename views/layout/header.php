@@ -25,6 +25,7 @@
 
                 <div class="flex items-center gap-3">
                     <?php if (isset($_SESSION['user_id'])): ?>
+                        <a href="index.php?action=profile" class="text-sm text-slate-400 hover:text-white transition-colors mr-2">Mi Perfil</a>
                         <span class="text-sm text-slate-400 hidden sm:inline-block"><?= htmlspecialchars($_SESSION['username']) ?></span>
                         
                         <a href="index.php?action=create_post" class="bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded text-sm font-bold transition-colors shadow-lg shadow-blue-900/20">

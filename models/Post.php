@@ -17,6 +17,12 @@ class Post {
         return $stmt->fetchAll();
     }
 
+    public function getByUser($user_id) {
+        $stmt = $this->db->prepare("SELECT posts.*, users.username FROM posts JOIN users ON posts.user_id = users.id WHERE posts.user_id = ? ORDER BY posts.created_at DESC");
+        $stmt->execute([$user_id]);
+        return $stmt->fetchAll();
+    }
+
     public function find($id) {
         $stmt = $this->db->prepare("SELECT posts.*, users.username FROM posts JOIN users ON posts.user_id = users.id WHERE posts.id = ?");
         $stmt->execute([$id]);

@@ -5,6 +5,7 @@ session_start();
 require_once __DIR__ . '/config/Database.php';
 require_once __DIR__ . '/controllers/PostController.php';
 require_once __DIR__ . '/controllers/UserController.php';
+require_once __DIR__ . '/controllers/CommentController.php';
 
 $action = $_GET['action'] ?? 'posts';
 
@@ -17,6 +18,9 @@ switch ($action) {
         break;
     case 'logout':
         (new UserController())->logout();
+        break;
+    case 'profile':
+        (new UserController())->profile($_GET['id'] ?? null);
         break;
     case 'create_post':
         (new PostController())->create();
@@ -35,6 +39,14 @@ switch ($action) {
     case 'delete_post':
         $id = $_GET['id'] ?? 0;
         (new PostController())->destroy($id);
+        break;
+
+    case 'store_comment':
+        (new CommentController())->store();
+        break;
+    case 'delete_comment':
+        $id = $_GET['id'] ?? 0;
+        (new CommentController())->delete($id);
         break;
 
     case 'store_user':

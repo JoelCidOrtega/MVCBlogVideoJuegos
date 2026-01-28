@@ -1,14 +1,17 @@
 <?php
 
 require_once __DIR__ . '/../models/Post.php';
+require_once __DIR__ . '/../models/Comment.php';
 
 class PostController {
     private $postModel;
+    private $db;
 
     public function __construct() {
         $database = new Database();
         $db = $database->getConnection();
         $this->postModel = new Post($db);
+        $this->db = $db;
     }
 
     protected function render(string $view, array $data = []) {
@@ -27,7 +30,8 @@ class PostController {
             header("Location: index.php?action=posts");
             exit;
         }
-        return $this->render('posts/show.php', compact('post'));
+        $comments = (new Comment($this->db))->getByPost($id);
+        return $this->render('posts/show.php', compact('post', 'comments'));
     }
 
     public function create() {
@@ -43,9 +47,9 @@ class PostController {
 
         $title = htmlspecialchars(trim($_POST['title']));
         $content = htmlspecialchars(trim($_POST['content']));
-        $image_path = null;
+        $image_path = trim($_POST['image_url'] ?? '');
 
-        if (!empty($_FILES['image']['name'])) {
+        if (empty($image_path) && !empty($_FILES['image']['name'])) {
             $target_dir = "public/uploads/";
             if (!is_dir($target_dir)) mkdir($target_dir, 0777, true);
             
@@ -98,17 +102,5 @@ class PostController {
         header("Location: index.php?action=posts");
     }
   
-    public function addComment() {
-        if (!isset($_SESSION['user_id'])) header("Location: index.php?action=login");
-        
-        $post_id = $_POST['post_id'];
-        $content = trim($_POST['content']);
-        
-        if (!empty($content)) {
-            require_once __DIR__ . '/../models/Comment.php';
-            $commentModel = new Comment($this->postModel->getDbConnection());
-            $commentModel->store($post_id, $_SESSION['user_id'], $content);
-        }
-        header("Location: index.php?action=show_post&id=" . $post_id);
-    }
+
 }
