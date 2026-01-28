@@ -19,7 +19,7 @@
                 <nav class="hidden md:flex gap-4 text-sm font-medium">
                     <a href="index.php?action=posts" class="hover:text-white transition-colors">Inicio</a>
                     <?php if (isset($_SESSION['user_id']) && $_SESSION['role'] === 'admin'): ?>
-                        <a href="index.php?action=admin" class="hover:text-white transition-colors">Admin</a>
+                        <a href="index.php?action=admin" class="hover:text-white transition-colors">Panel/a>
                     <?php endif; ?>
                 </nav>
 
