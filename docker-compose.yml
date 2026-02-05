@@ -5,7 +5,7 @@ services:
       dockerfile: Dockerfile
     container_name: mvc_app
     ports:
-      - "8080:80"
+      - "8086:80"
     environment:
       - APACHE_DOCUMENT_ROOT=/var/www/html
     volumes:

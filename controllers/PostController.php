@@ -24,15 +24,24 @@ class PostController {
         return $this->render('posts/index.php', ['posts' => $posts]);
     }
 
-    public function show($id) {
-        $post = $this->postModel->find($id);
-        if (!$post) {
-            header("Location: index.php?action=posts");
-            exit;
-        }
-        $comments = (new Comment($this->db))->getByPost($id);
-        return $this->render('posts/show.php', compact('post', 'comments'));
+    // En controllers/PostController.php
+
+public function show($id) {
+    $post = $this->postModel->find($id);
+    if (!$post) {
+        header("Location: index.php?action=posts");
+        exit;
     }
+
+    // 1. Recuperar posts relacionados usando el título del post actual
+    $related_posts = $this->postModel->getRelatedPosts($id, $post['title']);
+
+    // 2. Recuperar comentarios
+    $comments = (new Comment($this->db))->getByPost($id);
+
+    // 3. Pasar 'related_posts' a la vista
+    return $this->render('posts/show.php', compact('post', 'comments', 'related_posts'));
+}
 
     public function create() {
         if (!isset($_SESSION['user_id'])) {
@@ -63,6 +72,8 @@ class PostController {
 
         $this->postModel->store($title, $content, $image_path, $_SESSION['user_id']);
         header("Location: index.php?action=posts");
+
+        
     }
 
     public function edit($id) {

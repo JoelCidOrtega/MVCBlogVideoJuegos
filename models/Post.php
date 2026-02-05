@@ -62,4 +62,24 @@ class Post {
         $stmt = $this->db->prepare("DELETE FROM posts WHERE id = ?");
         return $stmt->execute([$id]);
     }
+    public function getRelatedPosts($id, $title, $limit = 3) {
+    // Buscamos posts similares por título y contenido, excluyendo el post actual
+    // Usamos MATCH AGAINST para obtener una puntuación de relevancia
+    $query = "SELECT p.*, u.username, 
+              MATCH(p.title, p.content) AGAINST(:title) as relevance
+              FROM posts p
+              JOIN users u ON p.user_id = u.id
+              WHERE p.id != :id
+              HAVING relevance > 0
+              ORDER BY relevance DESC
+              LIMIT :limit";
+    
+    $stmt = $this->db->prepare($query);
+    $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+    $stmt->bindValue(':title', $title);
+    $stmt->bindValue(':limit', (int)$limit, PDO::PARAM_INT);
+    $stmt->execute();
+    
+    return $stmt->fetchAll();
+}
 }

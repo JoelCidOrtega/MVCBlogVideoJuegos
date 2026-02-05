@@ -98,11 +98,40 @@
         </div>
     <?php endif; ?>
 </div>
-
+<?php if (!empty($related_posts)): ?>
+<div class="max-w-3xl mx-auto mt-8">
+    <h3 class="text-sm font-bold text-blue-400 mb-4 uppercase tracking-widest">También te puede interesar:</h3>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <?php foreach ($related_posts as $r): ?>
+            <a href="index.php?action=show_post&id=<?= $r['id'] ?>" class="group block bg-slate-800 border border-slate-700 rounded-lg overflow-hidden hover:border-blue-500 transition-all shadow-sm">
+                <?php 
+                $img = !empty($r['image_path']) ? $r['image_path'] : $r['image_url'];
+                if (!empty($img)):
+                    $isUrl = filter_var($img, FILTER_VALIDATE_URL) || strpos($img, 'http') === 0;
+                    $src = $isUrl ? $img : (strpos($img, 'public/uploads') === false ? 'public/uploads/' . basename($img) : $img);
+                ?>
+                    <img src="<?= htmlspecialchars($src) ?>" class="w-full h-24 object-cover opacity-80 group-hover:opacity-100 transition-opacity">
+                <?php else: ?>
+                    <div class="w-full h-24 bg-slate-900 flex items-center justify-center text-slate-700">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                    </div>
+                <?php endif; ?>
+                <div class="p-3">
+                    <h4 class="text-white font-bold text-xs line-clamp-2 group-hover:text-blue-400 transition-colors">
+                        <?= htmlspecialchars($r['title']) ?>
+                    </h4>
+                </div>
+            </a>
+        <?php endforeach; ?>
+    </div>
+</div>
+<?php endif; ?>
 <div class="max-w-3xl mx-auto mt-6 mb-12">
     <a href="index.php" class="text-sm text-slate-500 hover:text-white font-bold flex items-center gap-1 transition-colors">
         <span>&larr;</span> Volver a la lista
     </a>
 </div>
+
+
 
 <?php include __DIR__ . '/../layout/footer.php'; ?>
