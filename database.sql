@@ -64,3 +64,5 @@ INSERT INTO posts (user_id, title, content, image_url, created_at) VALUES
  'Kratos y Atreus regresan para enfrentarse al fin de los tiempos en una de las historias más maduras y emocionantes de PlayStation. Ragnarök no es solo un despliegue de violencia brutal y épica visual; es, en su corazón, una historia sobre la paternidad, el crecimiento y el miedo a dejar ir. El sistema de combate, ya excelente en la entrega de 2018, se siente más dinámico que nunca con la introducción de nuevas habilidades para las Espadas del Caos y el Hacha Leviatán. Explorar los Nueve Reinos es un deleite constante gracias a una dirección de arte soberbia y a un diseño de sonido que te sumerge por completo en la mitología nórdica. Un cierre perfecto para una etapa inolvidable del Fantasma de Esparta.', 
  'https://images.unsplash.com/photo-1552820728-8b83bb6b773f?w=800', 
  NOW());
+
+ ALTER TABLE posts ADD FULLTEXT(title, content);

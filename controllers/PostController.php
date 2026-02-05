@@ -24,24 +24,16 @@ class PostController {
         return $this->render('posts/index.php', ['posts' => $posts]);
     }
 
-    // En controllers/PostController.php
-
-public function show($id) {
-    $post = $this->postModel->find($id);
-    if (!$post) {
-        header("Location: index.php?action=posts");
-        exit;
+    public function show($id) {
+        $post = $this->postModel->find($id);
+        if (!$post) {
+            header("Location: index.php?action=posts");
+            exit;
+        }
+        $related_posts = $this->postModel->getRelatedPosts($id, $post['title']);
+        $comments = (new Comment($this->db))->getByPost($id);
+        return $this->render('posts/show.php', compact('post', 'comments', 'related_posts'));
     }
-
-    // 1. Recuperar posts relacionados usando el título del post actual
-    $related_posts = $this->postModel->getRelatedPosts($id, $post['title']);
-
-    // 2. Recuperar comentarios
-    $comments = (new Comment($this->db))->getByPost($id);
-
-    // 3. Pasar 'related_posts' a la vista
-    return $this->render('posts/show.php', compact('post', 'comments', 'related_posts'));
-}
 
     public function create() {
         if (!isset($_SESSION['user_id'])) {
@@ -70,20 +62,51 @@ public function show($id) {
             }
         }
 
-        $this->postModel->store($title, $content, $image_path, $_SESSION['user_id']);
-        header("Location: index.php?action=posts");
+        // 1. Guardamos el post una sola vez y capturamos el ID
+        $postId = $this->postModel->store($title, $content, $image_path, $_SESSION['user_id']);
 
+        if ($postId) {
+            $payload = [
+                'id' => $postId,
+                'title' => $title,
+                'content' => $content,
+                'author' => $_SESSION['username'],
+                'url' => "http://localhost:8086/index.php?action=show_post&id=" . $postId
+            ];
+            
+            // 2. Ahora este método ya existe abajo y no dará error
+            $this->notifyN8N($payload);
+        }
+
+        // ELIMINADO: Se borró la segunda llamada a $this->postModel->store que duplicaba el post
+        header("Location: index.php?action=posts");
+    }
+
+    private function notifyN8N($payload) {
+        // CAMBIO: Añadimos "-test" a la URL para que n8n lo capture mientras editas el flujo
+        $url = "http://mvc_n8n:5678/webhook-test/nueva-publicacion"; 
         
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($payload));
+        curl_setopt($ch, CURLOPT_HTTPHEADER, [
+            'Content-Type: application/json'
+        ]);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 5); 
+        
+        // Opcional: Para debuggear si hay error de conexión
+        $response = curl_exec($ch);
+        $error = curl_error($ch);
+        curl_close($ch);
     }
 
     public function edit($id) {
         $post = $this->postModel->find($id);
-        
         if (!isset($_SESSION['user_id']) || ($_SESSION['role'] !== 'admin' && $_SESSION['user_id'] != $post['user_id'])) {
             header("Location: index.php?action=posts");
             exit;
         }
-
         return $this->render('posts/edit.php', compact('post'));
     }
 
@@ -93,11 +116,9 @@ public function show($id) {
             header("Location: index.php?action=posts");
             exit;
         }
-
         $title = trim($_POST['title']);
         $content = trim($_POST['content']);
         $image_url = trim($_POST['image_url'] ?? '');
-        
         $this->postModel->update($id, $title, $content, $image_url);
         header("Location: index.php?action=show_post&id=$id");
     }
@@ -108,10 +129,7 @@ public function show($id) {
             header("Location: index.php?action=posts");
             exit;
         }
-
         $this->postModel->delete($id);
         header("Location: index.php?action=posts");
     }
-  
-
 }
