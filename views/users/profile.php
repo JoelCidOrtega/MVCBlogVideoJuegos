@@ -1,7 +1,7 @@
 <?php include __DIR__ . '/../layout/header.php'; ?>
 
 <div class="max-w-4xl mx-auto">
-    <!-- Profile Header -->
+
     <div class="bg-slate-800 rounded border border-slate-700 p-8 shadow-lg mb-8 text-center md:text-left md:flex items-center gap-8">
         <div class="w-32 h-32 bg-slate-700 rounded-full flex items-center justify-center text-4xl font-bold text-slate-400 mx-auto md:mx-0 shrink-0 border-4 border-slate-600">
             <?= strtoupper(substr($user['username'], 0, 1)) ?>
@@ -24,7 +24,6 @@
         </div>
     </div>
 
-    <!-- User Posts -->
     <h2 class="text-xl font-bold text-white mb-6 flex items-center gap-2">
         <span>Publicaciones de <?= htmlspecialchars($user['username']) ?></span>
         <div class="h-px bg-slate-700 flex-grow ml-4"></div>
@@ -41,7 +40,7 @@
                     <?php if (!empty($post['image_url']) || !empty($post['image_path'])): 
                         $img = !empty($post['image_path']) ? $post['image_path'] : $post['image_url'];
                         if (!empty($img)):
-                             // Logic to handle uploads path vs URL
+
                             $src = $img;
                             if (strpos($img, 'http') !== 0 && strpos($img, 'public/uploads') === false && !filter_var($img, FILTER_VALIDATE_URL)) {
                                 $src = 'public/uploads/' . basename($img);

@@ -56,26 +56,8 @@ class AdminController {
     }
 
     public function deleteUser($id) {
-        $userModel = new User($this->db); // Note: Original code tried to call delete on User model but it didn't exist in previous view. Assuming we fixed logic or will fix logic. However, User model update in previous step didn't add delete. Let's fix that.
-        // Actually, looking at previous steps, I didn't add delete to User.php. I should add it.
-        // For now, I will use direct DB in controller as fallback or add it to model in next step to be clean.
-        // Wait, step 353 showed User.php and it DID NOT have a delete method.
-        // The AdminController in step 348 used a direct query fallback:
-        /*
-            if ($id) {
-                $query = "DELETE FROM users WHERE id = :id";
-                $stmt = $this->db->prepare($query);
-                $stmt->bindParam(':id', $id);
-                $stmt->execute();
-            }
-        */
-       // So I will keep that logic for now to be safe, or cleaner: add delete to User.php.
-       // I'll stick to the controller implementation I wrote in 348 which was direct SQL, 
-       // BUT I wrote User.php in 371 (just now) without delete. 
-       // I should probably add delete to User.php to be consistent. 
-       
+        $userModel = new User($this->db);
         if ($id) {
-             // Direct implementation for safety as per previous controller state
             $query = "DELETE FROM users WHERE id = :id";
             $stmt = $this->db->prepare($query);
             $stmt->bindParam(':id', $id);

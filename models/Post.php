@@ -63,8 +63,6 @@ class Post {
         return $stmt->execute([$id]);
     }
     public function getRelatedPosts($id, $title, $limit = 3) {
-    // Buscamos posts similares por título y contenido, excluyendo el post actual
-    // Usamos MATCH AGAINST para obtener una puntuación de relevancia
     $query = "SELECT p.*, u.username, 
               MATCH(p.title, p.content) AGAINST(:title) as relevance
               FROM posts p

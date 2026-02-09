@@ -62,7 +62,6 @@ class PostController {
             }
         }
 
-        // 1. Guardamos el post una sola vez y capturamos el ID
         $postId = $this->postModel->store($title, $content, $image_path, $_SESSION['user_id']);
 
         if ($postId) {
@@ -74,16 +73,13 @@ class PostController {
                 'url' => "http://localhost:8086/index.php?action=show_post&id=" . $postId
             ];
             
-            // 2. Ahora este método ya existe abajo y no dará error
             $this->notifyN8N($payload);
         }
 
-        // ELIMINADO: Se borró la segunda llamada a $this->postModel->store que duplicaba el post
         header("Location: index.php?action=posts");
     }
 
     private function notifyN8N($payload) {
-        // CAMBIO: Añadimos "-test" a la URL para que n8n lo capture mientras editas el flujo
         $url = "http://mvc_n8n:5678/webhook-test/nueva-publicacion"; 
         
         $ch = curl_init($url);
@@ -94,8 +90,6 @@ class PostController {
             'Content-Type: application/json'
         ]);
         curl_setopt($ch, CURLOPT_TIMEOUT, 5); 
-        
-        // Opcional: Para debuggear si hay error de conexión
         $response = curl_exec($ch);
         $error = curl_error($ch);
         curl_close($ch);

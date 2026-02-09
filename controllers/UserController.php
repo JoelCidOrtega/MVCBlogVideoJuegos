@@ -71,7 +71,6 @@ class UserController {
         exit;
     }
     public function profile($id = null) {
-        // If no ID provided, show current user's profile
         if ($id === null) {
             if (!isset($_SESSION['user_id'])) {
                 header("Location: index.php?action=login");
